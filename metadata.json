@@ -1,0 +1,6 @@
+{
+  "name": "SilvaeGuard Enterprise Operations Platform",
+  "description": "Autonomous Forestry Operations, Labor Compliance, Fleet Telemetry & Central Brain Engine with offline PWA and GIS tracking",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
