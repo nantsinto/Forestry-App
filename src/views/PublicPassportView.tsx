@@ -129,7 +129,8 @@ export const PublicPassportView: React.FC<{ token: string }> = ({ token }) => {
             </div>
             {verification && (
               <div className={valid ? 'text-emerald-500' : 'text-rose-400'}>
-                <span className="text-slate-600">computed</span> {verification.expectedHash}
+                <span className="text-slate-600">computed</span>{' '}
+                <span data-testid="computed-hash">{verification.expectedHash}</span>
               </div>
             )}
           </div>
