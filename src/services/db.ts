@@ -53,11 +53,62 @@ export interface DispatchAlertRecord {
   unitAssigned?: string;
 }
 
+export type PassportGrade = 'A' | 'B' | 'C' | 'Reject';
+export type PassportStatus = 'in_field' | 'in_transit' | 'delivered';
+
+/** A single harvested log's chain-of-custody record. Hashed so it can be verified offline. */
+export interface TimberPassportRecord {
+  id?: number;
+  passportId: string;
+  speciesCode: string;
+  speciesName: string;
+  scientificName: string;
+  grade: PassportGrade;
+  dbhCm: number;
+  heightM: number;
+  volumeM3: number;
+  carbonTco2e: number;
+  blockId: string;
+  blockName: string;
+  latitude: number;
+  longitude: number;
+  accuracyM: number;
+  harvestedAt: string; // YYYY-MM-DD
+  crew: string;
+  permitNo: string;
+  operator: string;
+  region: string;
+  previousHash: string;
+  payloadHash: string;
+  status: PassportStatus;
+  synced: number;
+  createdAt: string;
+}
+
+export type PassportEventType = 'created' | 'loaded' | 'transferred' | 'inspected' | 'delivered';
+
+/** One custody handover appended to a passport. Each event hashes the one before it. */
+export interface PassportEventRecord {
+  id?: number;
+  passportId: string;
+  seq: number;
+  type: PassportEventType;
+  actor: string;
+  location: string;
+  note: string;
+  timestamp: string;
+  previousHash: string;
+  payloadHash: string;
+  synced: number;
+}
+
 class SilvaeGuardDatabase extends Dexie {
   breadcrumbs!: Table<BreadcrumbRecord, number>;
   sensorEvents!: Table<SensorEventRecord, number>;
   auditFindings!: Table<AuditFindingRecord, number>;
   dispatchAlerts!: Table<DispatchAlertRecord, number>;
+  passports!: Table<TimberPassportRecord, number>;
+  passportEvents!: Table<PassportEventRecord, number>;
 
   constructor() {
     super('SilvaeGuardTelemetry');
@@ -66,6 +117,10 @@ class SilvaeGuardDatabase extends Dexie {
       sensorEvents: '++id, nodeId, zone, readingType, status, timestamp, synced',
       auditFindings: '++id, auditId, module, status',
       dispatchAlerts: '++id, alertId, severity, status, timestamp',
+    });
+    this.version(2).stores({
+      passports: '++id, passportId, blockId, speciesCode, grade, harvestedAt, status, synced',
+      passportEvents: '++id, passportId, seq, type, timestamp, synced',
     });
   }
 }

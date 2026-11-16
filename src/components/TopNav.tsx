@@ -2,7 +2,7 @@ import React from 'react';
 import { PWAInstallButton } from './PWAInstallButton';
 import { ShieldAlert, RefreshCw } from 'lucide-react';
 
-export type NavTab = 'audit' | 'gis' | 'brain' | 'queue' | 'apk';
+export type NavTab = 'passport' | 'audit' | 'gis' | 'brain' | 'queue' | 'apk';
 
 interface TopNavProps {
   activeTab: NavTab;
@@ -28,7 +28,7 @@ export const TopNav: React.FC<TopNavProps> = ({
       {/* Zone 1: Single text wordmark */}
       <div className="flex items-center gap-3 shrink-0">
         <button
-          onClick={() => onTabChange('audit')}
+          onClick={() => onTabChange('passport')}
           className="text-lg font-bold tracking-tight text-white hover:text-emerald-400 transition-colors whitespace-nowrap shrink-0 flex items-center gap-2 text-left"
         >
           <span className="w-2.5 h-2.5 bg-emerald-500 rounded-sm transform rotate-45 inline-block" />
@@ -36,8 +36,19 @@ export const TopNav: React.FC<TopNavProps> = ({
         </button>
       </div>
 
-      {/* Zone 2: 4-5 clean single-line nav links */}
-      <nav className="hidden md:flex items-center gap-7 text-xs font-medium text-slate-400">
+      {/* Zone 2: clean single-line nav links */}
+      <nav className="hidden lg:flex items-center gap-6 text-xs font-medium text-slate-400">
+        <button
+          onClick={() => onTabChange('passport')}
+          className={`whitespace-nowrap shrink-0 transition-colors pb-0.5 ${
+            activeTab === 'passport'
+              ? 'text-white border-b-2 border-emerald-500 font-semibold'
+              : 'hover:text-slate-200'
+          }`}
+        >
+          Timber Passport
+        </button>
+
         <button
           onClick={() => onTabChange('audit')}
           className={`whitespace-nowrap shrink-0 transition-colors pb-0.5 ${
